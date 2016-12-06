@@ -11,7 +11,7 @@ scale = map(lambda x : 8 * pow(2, x/6.), range(0,-6,-1))
 eps = 0.000001
 
 def g_depth(word) :
-    g_count = 4
+    g_count = 0
     for char in word :
         if char == 'g' or char == 'G' :
             g_count += 1
