@@ -100,7 +100,8 @@ def get_params(box) :
     params['size'] = size
 
     params['lattice_jet'] = { 'f' : scale[3]*center[3] + scale[0]*center[0]*1.j, 'df0' : scale[3]*size[3] + scale[0]*size[0]*1.j, 'df1' : 0., 'df2' : 0., 'error' : 0. }
-    params['lox_sqrt_jet'] = { 'f' :  scale[4]*center[4] + scale[1]*center[1]*1.j, 'df0' : 0., 'df1' : scale[4]*size[4] + scale[1]*size[1]*1.j, 'df2' : 0., 'error' : 0. }
+    #params['lox_sqrt_jet'] =  { 'f' :  0., 'df0' : 0., 'df1' : 0., 'df2' : 0., 'error' : 0. }
+    params['lox_sqrt_jet'] =  { 'f' :  scale[4]*center[4] + scale[1]*center[1]*1.j, 'df0' : 0., 'df1' : scale[4]*size[4] + scale[1]*size[1]*1.j, 'df2' : 0., 'error' : 0. }
     params['parabolic_jet'] = { 'f' :  scale[5]*center[5] + scale[2]*center[2]*1.j, 'df0' : 0., 'df1' : 0., 'df2' : scale[5]*size[5] + scale[2]*size[2]*1.j, 'error' : 0. }
 
     return params
