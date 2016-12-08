@@ -6,9 +6,45 @@ from pprint import *
 from cmath import *
 from numpy import floor, ceil, dot
 from tkFileDialog import *
- 
+
+
+a = 1.86
+
+sqrt2 = 1.41421356237
+
+p = (a+a*1.j)*0.70710678118
+
+m = float(a*sqrt2)
+
+n = float(0.) + float(a*sqrt2)*1.j
+
+
 scale = map(lambda x : 8 * pow(2, x/6.), range(0,-6,-1))
 eps = 0.000001
+
+
+def get_G(params) :
+
+    return [[p*1.j,1.j],[1.j,0.]]
+    '''
+    l = params['lattice']
+    s = params['lox_sqrt']
+    p = params['parabolic']
+    return [[p*s*1.j, 1.j/s], [s*1.j, 0.]]
+    '''
+
+def get_g(params) :
+
+    return [[0., -1.j], [-1.j, p*1.j]]
+
+# Give parabolic element with M,N power counts
+def get_T(params, M_pow, N_pow) :
+    p = params['lattice']
+    return [[1., n*float(N_pow) + m*float(M_pow)],[0.,1.]]
+
+
+
+
 
 def g_depth(word) :
     g_count = 0
@@ -92,7 +128,7 @@ def get_params(box) :
         pos += 1
     
     params = {}
-    params['lattice'] = scale[3]*center[3] + scale[0]*center[0]*1.j
+    params['lattice'] = n
     params['lox_sqrt'] = scale[4]*center[4] + scale[1]*center[1]*1.j
     params['parabolic'] = scale[5]*center[5] + scale[2]*center[2]*1.j
    
@@ -141,23 +177,6 @@ def get_min_area(params) :
     abs_lox_sqrt = min_jet_parameter(params,'lox_sqrt_jet')
     min_lattice = min_parameter(params,'lattice')
     return abs_lox_sqrt * abs_lox_sqrt * imag(min_lattice)
-
-def get_G(params) :
-    l = params['lattice']
-    s = params['lox_sqrt']
-    p = params['parabolic']
-    return [[p*s*1.j, 1.j/s], [s*1.j, 0.]]
-
-def get_g(params) :
-    l = params['lattice']
-    s = params['lox_sqrt']
-    p = params['parabolic']
-    return [[0., -1.j/s], [-s*1.j, p*s*1.j]]
-
-# Give parabolic element with M,N power counts
-def get_T(params, M_pow, N_pow) :
-    p = params['lattice']
-    return [[1., p*float(N_pow) + float(M_pow)],[0.,1.]]
 
 def get_first(word) :
     if len(word) > 0 :
@@ -362,7 +381,9 @@ class cusp(Tk) :
         G = get_G(self.params)
         g = get_g(self.params)
         M = get_T(self.params,1,0)
+        print M
         N = get_T(self.params,0,1)
+        print N
         self.elements = { 'g' : g, 'G' : G, 'NM' : dot(M,N), 'M' : M, 'N' : N, 'GG' : dot(G,G) }
         self.cusp_height = max_horo_height(G)
         self.height_cutoff = self.cusp_height*self.fraction_cutoff
